@@ -1,25 +1,103 @@
-import logo from './logo.svg';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import React from 'react';
+// apollo
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+   gql
+} from "@apollo/client";
+import Header from './components/header/Header';
+import Main from './components/main/Main';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// redux
+
+import {connect} from 'react-redux';
+import {setAllProducts} from './redux/actions/actions'
+
+
+
+
+ 
+class App extends React.Component {
+    state={
+      client:{}
+    }
+       componentDidMount(){
+        const client =  new ApolloClient({
+          cache: new InMemoryCache(),
+          uri: "http://localhost:4000/graphql"
+        })
+
+        this.setState({client:client})
+        client && client
+        .query({
+          query: gql`
+            query GetAllProducts {
+              categories{
+                name
+                products{
+                id
+                name
+                inStock
+                gallery
+                description
+                category
+                attributes{
+                      id
+              name
+              type
+              items{
+                  displayValue
+              value
+              id
+              }
+                }
+                prices{
+                   currency
+                      amount
+                }
+                brand
+                }
+              }
+            }
+          `
+        })
+        .then(result => {
+          this.props.setAllProducts(result.data)
+          
+        });
+      }
+
+
+  render() { 
+    return (
+      
+      <ApolloProvider client={this.state.client}>
+        <div className="app">
+        <Header/>
+        <Main/>
+        </div>
+      </ApolloProvider>
+      
+      );
+  }
+}
+ 
+const mapStateToProps = (state) => {
+  return{
+      tech: state.allProducts.tech,
+      clothes: state.allProducts.tech
+  }
 }
 
-export default App;
+const mapDispatchToProps = () => {
+  return {
+    setAllProducts,
+
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps())(App);

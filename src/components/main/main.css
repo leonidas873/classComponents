@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&family=Roboto+Condensed:wght@300;400;700&display=swap');
+
+.main{
+    box-sizing: border-box;
+    padding:0px 120px;
+    max-height:100vh;
+    overflow: auto;
+    padding-bottom: 50px;
+}
+
+.main__category-heading{
+
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 42px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 67px;
+    letter-spacing: 0px;
+    text-align: left;
+    margin:80px 0px;
+    margin-top:160px;
+}
+
+.catalog{
+display:grid;
+grid-template-columns: repeat(auto-fill,minMax(380px,1fr));
+grid-gap:40px;
+}
+.product__overlay{
+    display:none;
+}
+.catalog__product{
+
+display:flex;
+flex-direction:column;
+border:1px solid gray;
+box-sizing:border-box;
+padding:15px;
+cursor:pointer;
+position:relative;
+}
+
+.catalog__product.not-inStock{
+    color:#8D8F9A;
+
+}
+
+.not-inStock .product__overlay{
+    display:block;
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:100%;
+    height:100%;
+    background: #8d8f9a32;
+    z-index:1;
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+line-height: 38px;
+letter-spacing: 0px;
+font-family: "Raleway", sans-serif;
+display:flex;
+align-items: center;
+justify-content:center;
+
+
+}
+
+.product__img{
+    height:100%;
+    position:relative;
+}
+
+.product__img img{
+width:100%;
+height:auto;
+object-fit: cover;
+margin-bottom:20px;
+max-height:380px;
+}
+
+.product__price{
+   
+    font-family: "Raleway", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 29px;
+    letter-spacing: 0em;
+    text-align: left;
+    
+}
+
+.product__title{
+    font-family: "Raleway", sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 29px;
+    letter-spacing: 0px;
+    text-align: left;
+    
+}
+
+
+
+.cart__logo-wrapper{
+    background: #5ECE7B;
+    color: white;
+    border-radius: 50%;
+    font-size: 29px;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    right: 16px;
+}
+
+.cart__logo-wrapper--hidden{
+    display:none;
+}
