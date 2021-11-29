@@ -14,34 +14,20 @@ import {
   toggleMiniCart,
   toggleShowCart
 } from "../../redux/actions/actions";
+import getSymbolFromCurrency from 'currency-symbol-map';
 
 class Header extends React.Component {
   state = {
     showCurencies: false,
     
   };
-
+  calcTotalQuantity = () => {
+    let quantity = 0;
+this.props.cartProducts.forEach(product=>{quantity = quantity+product.quantity; return product})
+return quantity;
+  }
   showCurencies = () => {
     this.setState({ showCurencies: !this.state.showCurencies });
-  };
-
-
-
-  setCurrencySymbol = (cur) => {
-    switch (cur) {
-      case "USD":
-        return "$";
-      case "GBP":
-        return "£";
-      case "AUD":
-        return "$";
-      case "JPY":
-        return "¥";
-      case "RUB":
-        return "ƒ";
-      default:
-        return "$";
-    }
   };
 
   render() {
@@ -71,6 +57,7 @@ class Header extends React.Component {
               this.props.setProductDetailId("");
               this.props.toggleMiniCart(false);
               this.props.toggleShowCart(false);
+              this.setState({ showCurencies:false})
             }}
           >
             tech
@@ -81,30 +68,35 @@ class Header extends React.Component {
           <img className="logo__front" src={logo2} alt="" />
         </div>
         <div className="curAndCart">
-          <div className="currency" onClick={this.showCurencies}>
-            <p>{this.setCurrencySymbol(this.props.currency)}</p>
+          <div className="currency" onClick={()=>{this.showCurencies();this.props.toggleMiniCart(false);}}>
+            
+            <p>{getSymbolFromCurrency(this.props.currency)}</p>
             <IoIosArrowDown
               className={
                 "arrow" + (!this.state.showCurencies ? "" : " arrow-up")
               }
             />
-            <ul
+            <div
               className={
                 "curencies " +
                 (this.state.showCurencies ? "" : " curencies--hide")
               }
             >
-              <li onClick={() => this.props.setCurrency("USD")}>$ USD</li>
-              <li onClick={() => this.props.setCurrency("GBP")}>£ GBP</li>
-              <li onClick={() => this.props.setCurrency("AUD")}>$ AUD</li>
-              <li onClick={() => this.props.setCurrency("JPY")}>¥ JPY</li>
-              <li onClick={() => this.props.setCurrency("RUB")}>ƒ RUB</li>
-            </ul>
+              {this.props.allCurrencies.map(cur=>
+                <div onClick={() => this.props.setCurrency(cur)} key={cur}>{getSymbolFromCurrency(cur)} {cur}</div>
+                )}
+
+            </div>
+            <div
+                className={"currencies__background-overlay"+
+                (this.state.showCurencies ? "" : " currencies__background-overlay--hidden")}
+                 onClick={()=>{this.setState({ showCurencies:false})}}
+              ></div>
           </div>
           <div className="miniCart">
-            <div className="miniCart__logo" onClick={()=>{this.props.toggleMiniCart(!this.props.showMiniCart)}}>
+            <div className="miniCart__logo" onClick={()=>{this.props.toggleMiniCart(!this.props.showMiniCart); this.setState({ showCurencies:false})}}>
               <FiShoppingCart className="miniCart-icon" />
-              <p className="miniCart__items-qty">{this.props.cartProducts.length}</p>
+              <p className="miniCart__items-qty">{this.calcTotalQuantity()}</p>
             </div>
             <div
               className={
@@ -130,7 +122,8 @@ const mapStateToProps = (state) => {
     activeCategory: state.allProducts.activeCategory,
     currency: state.allProducts.currency,
     cartProducts:state.cart.cartProducts,
-    showMiniCart: state.cart.showMiniCart
+    showMiniCart: state.cart.showMiniCart,
+    allCurrencies:state.allProducts.allCurrencies
   };
 };
 

@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap');
 .header {
-  background-color: rgb(184, 160, 160);
+  background-color: white;
   height: 80px;
   display: flex;
   justify-content: space-between;
@@ -34,6 +34,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  margin:0;
 }
 
 .category-active {
@@ -84,6 +85,10 @@
  
 }
 
+.currency p {
+  margin:0;
+}
+
 .arrow {
   width: 15px;
 }
@@ -99,8 +104,12 @@ margin-left:-20px;
 -webkit-box-shadow:-1px 6px 13px -5px rgb(0 0 0 / 29%); 
 box-shadow:-1px 6px 13px -5px rgb(0 0 0 / 29%);
 background-color: white;
+z-index:123;
 }
 
+.curencies div:hover{
+  color:#5ece7b;
+}
 .curencies--hide{
     display:none;
 }
@@ -148,7 +157,7 @@ text-transform: uppercase;
 }
 
 .miniCart__container{
-width:350px;
+width:400px;
 overflow-y:auto;
 background-color: white;
 position:absolute;
@@ -240,6 +249,7 @@ display:flex;
 flex-direction:column;
 justify-content: space-between;
 align-items:center;
+height:200px;
 }
 
 .product__qty > * {
@@ -253,6 +263,8 @@ align-items:center;
   width:calc(100% - 40px);
   flex:1;
   object-fit: cover;
+  object-fit: contain;
+    height: 200px;
 }
 
 .product__total-cost{
@@ -310,14 +322,15 @@ border:1px solid #5ECE7B;
   display:flex;
   flex-direction:column;
   gap:10px;
-  height: 50px;
-  overflow-y: auto;
+  
+  
 }
 
 .miniCart__attribute-options{
   display:flex;
   flex-wrap:wrap;
   gap:5px;
+  padding:0;
 }
 
 .miniCart__attribute-oprion{
@@ -342,4 +355,29 @@ background-color:#e2e2e2
 border:1px solid black;
 background-color: black;
 color:white;
+}
+
+
+.currencies__background-overlay{
+  position:absolute;
+  left:0px;
+  top:80px;
+  width:100%;
+  height:calc(100vh - 80px);
+  display:block;
+}
+
+.currencies__background-overlay--hidden{
+display:none;
+}
+
+.swatch-attribute--selected{
+  box-shadow: 0px 0px 3px 2px rgba(255,0,0,0.75);
+-webkit-box-shadow: 0px 0px 3px 2px rgba(255,0,0,0.75);
+-moz-box-shadow: 0px 0px 3px 2px rgba(255,0,0,0.75);
+}
+
+.attribute__name{
+  font-size: medium;
+    font-weight: bold;
 }

@@ -9,13 +9,22 @@ import {
   toggleShowCart,
   toggleMiniCart,
 } from "../../redux/actions/actions";
+import getSymbolFromCurrency from "currency-symbol-map";
 
 class MiniCart extends React.Component {
   onDecreaseProductQuantity = (product) => {
     if (product.quantity > 1) {
-      this.props.decreaseProductQuantity(product, this.props.cartProducts);
+      this.props.decreaseProductQuantity(
+        this.props.cartProducts,
+        product,
+        product.selectedAttributes
+      );
     } else if (product.quantity === 1) {
-      this.props.deleteProductFromCart(product, this.props.cartProducts);
+      this.props.deleteProductFromCart(
+        this.props.cartProducts,
+        product,
+        product.selectedAttributes
+      );
     }
   };
 
@@ -26,22 +35,12 @@ class MiniCart extends React.Component {
     return amount;
   };
 
-  setCurrencySymbol = (cur) => {
-    switch (cur) {
-      case "USD":
-        return "$";
-      case "GBP":
-        return "£";
-      case "AUD":
-        return "$";
-      case "JPY":
-        return "¥";
-      case "RUB":
-        return "ƒ";
-      default:
-        return "$";
-    }
-  };
+  calcTotalQuantity = () => {
+    let quantity = 0;
+this.props.cartProducts.forEach(product=>{quantity = quantity+product.quantity; return product})
+return quantity;
+  }
+
 
   calcTotalCost = () => {
     let total = 0;
@@ -60,7 +59,7 @@ class MiniCart extends React.Component {
       <div className="miniCart__container">
         <div className="miniCart__header">
           <h4>My Bag,</h4>
-          <span>{this.props.cartProducts.length} items</span>
+          <span>{this.calcTotalQuantity()} items</span>
         </div>
 
         {this.props.cartProducts.length === 0 ? (
@@ -72,16 +71,21 @@ class MiniCart extends React.Component {
         ) : (
           <div className="miniCart__products">
             {this.props.cartProducts.map((product) => (
-              <div className="miniCart__product" key={product.id}>
+              <div
+                className="miniCart__product"
+                key={this.props.cartProducts.indexOf(product)}
+              >
                 <div className="product-col-ver">
+                  <div className="product__brand">{product.brand}</div>
                   <h5 className="product__title">{product.name}</h5>
                   <p className="product__price">
-                    {this.setCurrencySymbol(this.props.currency)}{" "}
+                    {getSymbolFromCurrency(this.props.currency)}{" "}
                     {this.getPrice(product.prices)}
                   </p>
                   <div className="miniCart__attributes">
                     {product.attributes.map((attr) => (
                       <div className="miniCart__attribute" key={attr.id}>
+                        <h5 className="attribute__name">{attr.name}:</h5>
                         <ul className="miniCart__attribute-options">
                           {attr.items.map((item) => (
                             <li
@@ -89,11 +93,15 @@ class MiniCart extends React.Component {
                                 "miniCart__attribute-oprion " +
                                 (product.selectedAttributes.filter(
                                   (elem) =>
-                                    elem.attributeName === attr.name &&
+                                    elem.name === attr.name &&
                                     elem.value === item.value
                                 ).length > 0
-                                  ? "miniCart__attribute-oprion--selected"
-                                  : "")
+                                ? attr.type === "swatch"
+                                ? "swatch-attribute--selected"
+                                : "miniCart__attribute-oprion--selected"
+                              : "")
+
+                                  
                               }
                               key={item.id}
                               style={{
@@ -116,8 +124,9 @@ class MiniCart extends React.Component {
                     <AiOutlinePlusSquare
                       onClick={() =>
                         this.props.increaseProductQuantity(
+                          this.props.cartProducts,
                           product,
-                          this.props.cartProducts
+                          product.selectedAttributes
                         )
                       }
                     />
@@ -140,7 +149,7 @@ class MiniCart extends React.Component {
         <div className="product__total-cost">
           <span>Total</span>
           <span>
-            {this.setCurrencySymbol(this.props.currency)} {this.calcTotalCost()}
+            {getSymbolFromCurrency(this.props.currency)} {this.calcTotalCost()}
           </span>
         </div>
         <div className="miniCart__btns">

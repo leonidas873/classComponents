@@ -1,9 +1,11 @@
-import { SET_ALL_PRODUCTS, SET_ACTIVE_CATEGORY, SET_CURRENCY, SET_PRODUCT_DETAIL_ID} from "../actions/actions";
+import { SET_ACTIVE_CATEGORY, SET_CURRENCY, SET_PRODUCT_DETAIL_ID, SET_CLOTHES, SET_TECH, SET_ALL_CURRENCIES, SET_APOLLO_CLIENT} from "../actions/actions";
 
 
 const initialState = {
+    client:{},
     clothes:[],
     tech:[],
+    allCurrencies:[],
     activeCategory:"clothes",
     currency:"USD",
     productDetailId:""
@@ -13,11 +15,22 @@ const initialState = {
 
 const allProductsReducer = (state = initialState, {type,payload}) => {
 switch(type){
-    case SET_ALL_PRODUCTS:
-        return {...state,
-            clothes:payload.clothes,
-            tech:payload.tech
-        };
+
+    case SET_CLOTHES:
+        return {
+            ...state,
+            clothes:payload
+        }    
+        case SET_TECH:
+        return {
+            ...state,
+            tech:payload
+        }   
+       case SET_ALL_CURRENCIES:
+           return {
+               ...state,
+               allCurrencies:payload
+           }   
     case SET_ACTIVE_CATEGORY:
         return {
             ...state,
@@ -32,7 +45,12 @@ switch(type){
         return{
             ...state,
             productDetailId:payload
-        }      
+        }  
+    case SET_APOLLO_CLIENT:
+        return{
+            ...state,
+            client:payload
+        }        
     default:
         return state;    
 }

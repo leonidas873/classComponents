@@ -10,71 +10,61 @@ import {
 } from "@apollo/client";
 import Header from './components/header/Header';
 import Main from './components/main/Main';
-
+import { clothesQuery, techQuery, currenciesQuery } from './Queries';
 // redux
 
 import {connect} from 'react-redux';
-import {setAllProducts} from './redux/actions/actions'
-
+import {setTech, setAllCurrencies, setApolloClient} from './redux/actions/actions'
+import {setClothes} from './redux/actions/actions';
 
 
 
  
 class App extends React.Component {
-    state={
-      client:{}
-    }
+
        componentDidMount(){
         const client =  new ApolloClient({
           cache: new InMemoryCache(),
           uri: "http://localhost:4000/graphql"
         })
 
-        this.setState({client:client})
+        this.props.setApolloClient(client);
         client && client
         .query({
-          query: gql`
-            query GetAllProducts {
-              categories{
-                name
-                products{
-                id
-                name
-                inStock
-                gallery
-                description
-                category
-                attributes{
-                      id
-              name
-              type
-              items{
-                  displayValue
-              value
-              id
-              }
-                }
-                prices{
-                   currency
-                      amount
-                }
-                brand
-                }
-              }
-            }
-          `
+          query: gql`${clothesQuery}`
         })
         .then(result => {
-          this.props.setAllProducts(result.data)
+          this.props.setClothes(result.data.category.products)
           
-        });
+        })
+        
+        client && client
+        .query({
+          query: gql`${techQuery}`
+        })
+        .then(result => {
+          this.props.setTech(result.data.category.products)
+          
+        })
+
+        
+        client && client
+        .query({
+          query: gql`${currenciesQuery}`
+        })
+        .then(result => {
+          this.props.setAllCurrencies(result.data.currencies);
+          
+          
+        })
+
       }
 
 
   render() { 
     return (
       
-      <ApolloProvider client={this.state.client}>
+      <ApolloProvider client={this.props.client}>
         <div className="app">
         <Header/>
         <Main/>
@@ -88,14 +78,17 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
   return{
       tech: state.allProducts.tech,
-      clothes: state.allProducts.tech
+      clothes: state.allProducts.tech,
+      client:state.allProducts.client
   }
 }
 
 const mapDispatchToProps = () => {
   return {
-    setAllProducts,
-
+    setClothes,
+    setTech,
+    setAllCurrencies,
+    setApolloClient
   }
 }
 

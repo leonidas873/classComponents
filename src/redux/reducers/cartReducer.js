@@ -5,7 +5,7 @@ import {
   DELETE_PRODUCT_FROM_CART,
   TOOGLE_SHOW_CART,
   TOGGLE_MINI_CART,
-  CHANGE_ATTRIBUTE_VALUE
+  CHANGE_ATTRIBUTE_VALUE,
 } from "../actions/actions";
 
 const initialState = {
