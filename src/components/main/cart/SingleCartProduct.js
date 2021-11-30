@@ -133,13 +133,13 @@ setPrevImage = () => {
                 />
               </div>
               <div className="cart__image-wrapper">
-                  <MdKeyboardArrowLeft className="cart__image-arrow1" onClick={()=>this.setPrevImage()}/>
+                 {this.props.product.gallery.length>1 && <MdKeyboardArrowLeft className="cart__image-arrow1" onClick={()=>this.setPrevImage()}/>}
               <img
                 className="cart__product-image"
                 src={this.props.product.gallery[this.state.currentImageIndex]}
                 alt=""
               />
-              <MdKeyboardArrowRight className="cart__image-arrow2" onClick={()=>{this.setNextImage()}}/>
+              {this.props.product.gallery.length>1 && <MdKeyboardArrowRight className="cart__image-arrow2" onClick={()=>{this.setNextImage()}}/>}
               </div>
             </div>
           </div>

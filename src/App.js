@@ -10,7 +10,7 @@ import {
 } from "@apollo/client";
 import Header from './components/header/Header';
 import Main from './components/main/Main';
-import { clothesQuery, techQuery, currenciesQuery } from './Queries';
+import { clothesQuery, currenciesQuery } from './Queries';
 // redux
 
 import {connect} from 'react-redux';
@@ -37,17 +37,7 @@ class App extends React.Component {
           this.props.setClothes(result.data.category.products)
           
         })
-        
-        client && client
-        .query({
-          query: gql`${techQuery}`
-        })
-        .then(result => {
-          this.props.setTech(result.data.category.products)
-          
-        })
 
-        
         client && client
         .query({
           query: gql`${currenciesQuery}`

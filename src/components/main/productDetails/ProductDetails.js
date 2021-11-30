@@ -217,9 +217,12 @@ class ProductDetails extends React.Component {
               )}
             </div>
             <div className="productDetails__properties">
-              <h4 className="productDetails__title">
-                {this.state.activeProduct.name}
-              </h4>
+     
+              
+              <div className="product__heading">
+              <div className="product__brand">{this.state.activeProduct.brand}</div>
+              <h4 className="productDetails__title">{this.state.activeProduct.name}</h4>
+              </div>
               {this.state.activeProduct.attributes.map((attr) => (
                 <div className="productDetails__attribute" key={attr.id}>
                   <h5 className="attribute__heading">{attr.name}:</h5>

@@ -17,6 +17,7 @@ class Main extends React.Component {
                 ? this.props.clothes
                 : this.props.tech
             }
+            activeCategory={this.props.activeCategory}
             currency={this.props.currency}
           />
         ) : (
