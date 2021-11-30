@@ -160,7 +160,7 @@ max-width:300px;
 
 .attribute__option--selected{
     border: 1px solid black;
-    color: white;
+    color: white !important;
     background: black;
 }
 
